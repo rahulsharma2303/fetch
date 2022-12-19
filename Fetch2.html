@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch</title>
+</head>
+<body>
+    <div class="wrapper">
+        <form action="">
+            <input type="text" placeholder="Enter Country Name">
+            <button>Show Flag</button>
+        </form>
+    <div class="flag"></div>
+    </div>
+
+    <script>
+        const form = document.querySelector('form');
+        
+        form.onsubmit = (e)=>{
+            e.preventDefault();
+
+            const country = document.querySelector('input').value
+            fetch('https://flagcdn.com/en/codes.json')
+            .then((response)=> {
+                return response.json()
+            })
+            .then((allcode) => {
+                console.log(allcode);
+                flag(allcode, country)
+            })
+        }
+        function flag(allcode, country){
+            country = country.toLowerCase()
+            const firstLetter = country[0].toUpperCase()
+            const countrysplit = country.split('')
+            countrysplit.splice(0,1,firstLetter)
+            const findFlag = countrysplit.join('')
+            
+            for(let code in allcode){
+                if(allcode[code]=== findFlag){
+                    const image = document.createElement('img')
+                    image.src = 'https://flagcdn.com/256x192/'+code+'.png'
+                    document.querySelector('.flag').appendChild(image)
+                }
+            }
+        }
+
+    </script>
+</body>
+</html>
